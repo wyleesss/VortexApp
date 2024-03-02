@@ -1,0 +1,25 @@
+﻿<Application x:Class="VortexApp.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:VortexApp.UI.Helpers"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             StartupUri="MainWindow.xaml"
+             Exit="Application_Exit">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/ContactCard.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/RequestCard.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/ScrollBar.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/ButtonHighlight.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/ImageButtonHighlight.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/TextBlockHighlight.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/TextBoxHighlight.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/MessageItem.xaml"/>
+                <ResourceDictionary Source="/VortexApp;component/UI/Themes/MessageBox.xaml"/>
+            </ResourceDictionary.MergedDictionaries>
+            <sys:Double x:Key="{x:Static SystemParameters.VerticalScrollBarWidthKey}">2.5</sys:Double>
+        </ResourceDictionary>
+    </Application.Resources>
+
+</Application>

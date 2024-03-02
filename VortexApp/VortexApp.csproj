@@ -1,0 +1,55 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <UseWPF>true</UseWPF>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="UI\Resources\AddIcon.png" />
+    <None Remove="UI\Resources\AppIcon.ico" />
+    <None Remove="UI\Resources\ApplyIcon.png" />
+    <None Remove="UI\Resources\BackgroundImage.jpg" />
+    <None Remove="UI\Resources\CallIcon.png" />
+    <None Remove="UI\Resources\CloseIcon.png" />
+    <None Remove="UI\Resources\DeclineIcon.png" />
+    <None Remove="UI\Resources\DefaultUserLogo.png" />
+    <None Remove="UI\Resources\Logo.png" />
+    <None Remove="UI\Resources\MaximizeIcon.png" />
+    <None Remove="UI\Resources\MaximizeIconSecondary.png" />
+    <None Remove="UI\Resources\MinimizeIcon.png" />
+    <None Remove="UI\Resources\MoreIcon.png" />
+    <None Remove="UI\Resources\SettingsIcon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="UI\MVVM\View\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="NAudio" Version="2.2.1" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="Ookii.Dialogs.Wpf" Version="5.0.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="UI\Resources\AddIcon.png" />
+    <Resource Include="UI\Resources\AppIcon.ico" />
+    <Resource Include="UI\Resources\ApplyIcon.png" />
+    <Resource Include="UI\Resources\BackgroundImage.jpg" />
+    <Resource Include="UI\Resources\CallIcon.png" />
+    <Resource Include="UI\Resources\CloseIcon.png" />
+    <Resource Include="UI\Resources\DeclineIcon.png" />
+    <Resource Include="UI\Resources\DefaultUserLogo.png" />
+    <Resource Include="UI\Resources\Logo.png" />
+    <Resource Include="UI\Resources\MaximizeIcon.png" />
+    <Resource Include="UI\Resources\MaximizeIconSecondary.png" />
+    <Resource Include="UI\Resources\MinimizeIcon.png" />
+    <Resource Include="UI\Resources\MoreIcon.png" />
+    <Resource Include="UI\Resources\SettingsIcon.png" />
+  </ItemGroup>
+
+</Project>

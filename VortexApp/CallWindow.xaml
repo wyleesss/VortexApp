@@ -1,0 +1,231 @@
+﻿<Window x:Class="VortexApp.CallWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:VortexApp"
+        xmlns:viewmodel="clr-namespace:VortexApp.UI.MVVM.ViewModel"
+        xmlns:local1="clr-namespace:VortexApp.UI.Controls"
+        xmlns:local2="clr-namespace:VortexApp.UI.Helpers"
+        mc:Ignorable="d"
+        Title="MainWindow"
+        MinWidth="860"
+        MinHeight="500"
+        WindowState="Normal"
+        WindowStyle="None"
+        Width="960" 
+        Height="540"
+        Icon="/Resources/AppIcon.ico" 
+        ResizeMode="NoResize" Background="#FF232323">
+    <Window.Resources>
+        <Image x:Key="Windowed"
+               Source="/Resources/MaximizeIconSecondary.png" />
+        <Image x:Key="Fullscreen"
+               Source="/Resources/MaximizeIcon.png" />
+    </Window.Resources>
+    <WindowChrome.WindowChrome>
+        <WindowChrome GlassFrameThickness="0"
+                      CornerRadius="0"
+                      CaptionHeight="0"
+                      UseAeroCaptionButtons="False"
+                      ResizeBorderThickness="7"/>
+    </WindowChrome.WindowChrome>
+    <Window.DataContext>
+        <viewmodel:MainViewModel/>
+    </Window.DataContext>
+    <Grid>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition />
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="TitleBar"
+              Grid.Row="0"
+              Background="#FF1C1C1C"
+              Opacity="1"
+              MouseLeftButtonDown="TitleBar_MouseLeftButtonDown">
+
+            <Image Source="./UI/Resources/Logo.png"
+                   VerticalAlignment="Center"
+                   Cursor="None"
+                   Height="15"/>
+
+            <StackPanel HorizontalAlignment="Right"
+                        Orientation="Horizontal">
+                <Button x:Name="MinimizeButton"
+                        Width="47"
+                        Height="25"
+                        BorderThickness="0"
+                        Background="{x:Null}"
+                        Style="{StaticResource ButtonHighlight}"
+                        Click="MinimizeButton_Click">
+                    <Image Source="./UI/Resources/MinimizeIcon.png"/>
+                </Button>
+                <Button x:Name="MaximizeButton"
+                        Width="47"
+                        Height="25"
+                        BorderThickness="0"
+                        Background="{x:Null}"
+                        Style="{StaticResource ButtonHighlight}"
+                        Click="MaximizeButton_Click">
+                    <Image Source="./UI/Resources/MaximizeIconSecondary.png"/>
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Border Background="#FF141414"
+                    CornerRadius="20"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch" Margin="3,0,3,3"/>
+
+            <Button Background="#FF343434"
+                    x:Name="ScreenShareButton"
+                    BorderThickness="0"
+                    Height="40"
+                    Width="200"
+                    Content="ScreenShare"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="18"
+                    Style="{StaticResource ImageButtonHighlight}"
+                    FontFamily="Corbel"
+                    Click="ScreenShareButton_Click"
+                    Margin="0,0,0,2.5" VerticalAlignment="Center" HorizontalAlignment="Center">
+
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius"
+                        Value="20"/>
+                    </Style>
+                </Button.Resources>
+
+            </Button>
+
+            <Button Background="#FF680000"
+                    x:Name="EndCallButton"
+                    BorderThickness="0"
+                    Height="40"
+                    Width="150"
+                    Content="End Call"
+                    Foreground="White"
+                    FontWeight="Bold"
+                    FontSize="18"
+                    Style="{StaticResource ImageButtonHighlight}"
+                    FontFamily="Corbel"
+                    Click="EndCallButton_Click"
+                    Margin="0,0,2,2.5" HorizontalAlignment="Right" VerticalAlignment="Center">
+
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius"
+                        Value="20"/>
+                    </Style>
+                </Button.Resources>
+
+            </Button>
+            <Button Background="#FF333030"
+                x:Name="MuteButton"
+                BorderThickness="0"
+                Height="40"
+                Width="150"
+                Content="Mute"
+                Foreground="White"
+                FontWeight="Bold"
+                FontSize="18"
+                FontFamily="Corbel"
+                Click="MuteButton_Click"
+                Margin="2,0,0,2.5" HorizontalAlignment="Left" VerticalAlignment="Center">
+
+                <Button.Resources>
+                    <Style TargetType="{x:Type Border}">
+                        <Setter Property="CornerRadius"
+                            Value="20"/>
+                    </Style>
+                </Button.Resources>
+
+                <Button.Style>
+                    <StaticResource ResourceKey="ImageButtonHighlight"/>
+                </Button.Style>
+
+            </Button>
+
+        </Grid>
+
+        <Grid Grid.Row="1"
+              x:Name="DefaultCallInfo">
+
+            <Ellipse Width="250" 
+                     Height="250"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     Margin="400,0,0,50">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding CallingContact.ImageSource, UpdateSourceTrigger=PropertyChanged}" 
+                                RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <Ellipse Width="250" 
+                     Height="250"
+                     VerticalAlignment="Center"
+                     HorizontalAlignment="Center"
+                     Margin="0,0,400,50">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding User.ImageSource, UpdateSourceTrigger=PropertyChanged}" 
+                                RenderOptions.BitmapScalingMode="HighQuality"/>
+                </Ellipse.Fill>
+            </Ellipse>
+
+            <TextBox Background="Transparent"
+         BorderThickness="0"
+         IsReadOnly="True"
+         SelectionBrush="Black"
+         VerticalAlignment="Center"
+         HorizontalAlignment="Center"
+         Text="{Binding CallingContact.Username}"
+         FontSize="30"
+         Width="300"
+         Foreground="White"
+         FontFamily="Corbel"
+         FontWeight="Bold"
+         TextAlignment="Center"
+         Margin="400,250,0,0"/>
+
+            <TextBox Background="Transparent"
+         BorderThickness="0"
+         IsReadOnly="True"
+         SelectionBrush="Black"
+         VerticalAlignment="Bottom"
+         HorizontalAlignment="Center"
+         Text="00:00:00"
+         FontSize="20"
+         Width="300"
+         Foreground="#FFC8C8C8"
+         FontFamily="Avignon Pro"
+         FontWeight="Normal"
+         TextAlignment="Center"
+         x:Name="TimerTextBox" Margin="0,0,0,10"/>
+
+            <TextBox Background="Transparent"
+         BorderThickness="0"
+         IsReadOnly="True"
+         SelectionBrush="Black"
+         VerticalAlignment="Center"
+         HorizontalAlignment="Center"
+         Text="{Binding User.Username}"
+         FontSize="30"
+         Width="300"
+         Foreground="White"
+         FontFamily="Corbel"
+         FontWeight="Bold"
+         TextAlignment="Center"
+         Margin="0,250,400,0"/>
+
+        </Grid>
+
+    </Grid>
+</Window>
