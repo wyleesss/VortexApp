@@ -16,7 +16,7 @@ namespace VortexApp.UI.Events
 
                 contact.Messages.Add(new MessageModel
                 {
-                    Username = context.User.Username + " (You)",
+                    Username = contact.Username,
                     Time = DateTime.Now,
                     ImageSource = "./UI/Resources/DefaultUserLogo.png",
                     Message = message,
