@@ -5,6 +5,8 @@ using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
 using System.Text;
+using VortexApp.UI.Events;
+using static Client.Services.Network.Utilits.ChatHelper;
 
 namespace Client.Services.Network
 {
@@ -30,7 +32,7 @@ namespace Client.Services.Network
         #region Properties
 
         #region Profile Info
-        public Guid Id { get; set; }
+        public string Id { get; set; }
         public string Login { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
@@ -153,7 +155,9 @@ namespace Client.Services.Network
                 if (bytesRead <= 0)
                     return;
                 ParseMessage(Data.GetBytes(state.Buffer));
-
+                state.Buffer = null;
+                state.Buffer = new byte[StateObject.BUFFER_SIZE];
+                GC.Collect();
                 server.Client.BeginReceive(state.Buffer, 0, ChatHelper.StateObject.BUFFER_SIZE, 0, OnReceive, state);
             }
             catch (SocketException)
@@ -167,10 +171,10 @@ namespace Client.Services.Network
         {
             if (data.Command == Command.Good_Auth)
             {
-                Console.WriteLine(data.Command.ToString());
                 string[] parts = data.Message.Split(' ');
-                Id = Guid.Parse(parts[0]);
+                Id = parts[0];
                 NickName = parts[1];
+                UIEvents.UserUpData(Id.ToString(), NickName);
                 int countFriends = int.Parse(parts[2]);
                 int secondData = 3;
                 if (countFriends > 0)
@@ -180,13 +184,14 @@ namespace Client.Services.Network
                         Friends.Add(Guid.Parse(parts[step]), parts[step + 1]);
                         secondData += 2;
                     }
-
+                    UIEvents.SetFriendsUI(Friends);
                     if (int.Parse(parts[secondData]) > 0)
                     {
                         for (int step = secondData + 1, i = 0; i < int.Parse(parts[secondData]); step += 2, i++)
                         {
                             FriendsRequests.Add(Guid.Parse(parts[step]), parts[step + 1]);
                         }
+                        UIEvents.SetReqUI(FriendsRequests);
                     }
                 }
                 else if (int.Parse(parts[secondData]) > 0)
@@ -195,15 +200,21 @@ namespace Client.Services.Network
                     {
                         FriendsRequests.Add(Guid.Parse(parts[step]), parts[step + 1]);
                     }
+                    UIEvents.SetReqUI(FriendsRequests);
                 }
+
+                UIEvents.MainWindowUse();
+                GC.Collect();
             }
             else if (data.Command == Command.Bad_Auth)
             {
-                Console.WriteLine(data.Command.ToString());
+                UIEvents.ClientBadAuth();
+                GC.Collect();
             }
             else if (data.Command == Command.Good_Reg)
             {
-                Console.WriteLine(data.Command.ToString());
+                UIEvents.RegGOOD();
+                GC.Collect();
             }
             else if (data.Command == Command.Bad_Reg)
             {
@@ -216,6 +227,10 @@ namespace Client.Services.Network
             else if (data.Command == Command.Accept_File)
             {
                 //TODO зберігати ін меморі або хз файл зробити хуй зна (назва файлу)
+            }
+            else if (data.Command == Command.Send_Message)
+            {
+                UIEvents.SendMessageUI(data.Message, data.From);
             }
             else if (data.Command == Command.Cancel_Call)
             {
@@ -260,6 +275,10 @@ namespace Client.Services.Network
                 //refresh UI появився новий друг
 
 
+            }
+            else if (data.Command == Command.UserNotConnected)
+            {
+                UIEvents.UserNotConnectedUI(data.To);
             }
         }
         public void DeclineFriendRequest(Guid friendGuid)
@@ -306,18 +325,18 @@ namespace Client.Services.Network
             }
         }
 
-        public void SendMessage(string message, Guid friend_ID)
+        public void SendMessage(string message, string friend_ID)
         {
-            Data data = new(Command.Send_Message, Id.ToString(), friend_ID.ToString(), IP, message);
+            Data data = new(Command.Send_Message, Id.ToString(), friend_ID, IP, message);
             SendComamnd(data);
         }
-        public void SendFile(string filename, Guid friend_ID)
+        public void SendFile(string filename, string friend_ID)
         {
-            Data data = new(Command.Accept_File, Id.ToString(), friend_ID.ToString(), IP, filename);
+            Data data = new(Command.Accept_File, Id.ToString(), friend_ID, IP, filename);
             SendComamnd(data);
             FileTool.SendFile(_file_path_transfer, file_port);
         }
-        public void CloseConnection()
+        public void Disconect()
         {
             IsConnected = false;
 
@@ -325,6 +344,15 @@ namespace Client.Services.Network
             if (server.Client.Connected)
                 server.Client.Send(data.ToBytes());
         }
+
+        public void CloseConnection()
+        {
+            IsConnected = false;
+            var data = new Data(Command.CloseConnection, Id.ToString(), "Server", IP, "");
+            if (server.Client.Connected)
+                server.Client.Send(data.ToBytes());
+        }
+
         #endregion
 
         static string CreateMD5(string input)

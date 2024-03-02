@@ -1,17 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using Client.Services.Network.Utilits;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shell;
 using System.Windows.Threading;
-using VortexApp.UI.MVVM.Model;
-using VortexApp.UI.MVVM.ViewModel;
 using VortexApp.UI.Helpers;
-using Microsoft.Win32;
-using System.IO;
-using System.Threading;
+using VortexApp.UI.MVVM.ViewModel;
 
 namespace VortexApp
 {
@@ -102,11 +94,19 @@ namespace VortexApp
         {
             if (SignUpTextBlock.IsSelected)
             {
-
+                ((MainViewModel)Application.Current.MainWindow.DataContext).client = new(ChatHelper.SERVER_PORT, ChatHelper.SERVER_IP, NetworkInterfaceUtility.GetRadminVPNIPAddress().ToString(),
+                    SignUpUsername.Text, SignUpPassword.Password, SignUpUsername.Text, SignUpGmailListBox.Text, DateTime.Now);
+                ((MainViewModel)Application.Current.MainWindow.DataContext).client.Init();
+                return;
             }
 
-            Application.Current.MainWindow.Show();
-            this.Close();
+            //((MainViewModel)Application.Current.MainWindow.DataContext).client = new(10000, "26.144.152.222", SignInGmailListBox.Text, SignInPassword.Password, 
+            //    NetworkInterfaceUtility.GetRadminVPNIPAddress().ToString());
+            ((MainViewModel)Application.Current.MainWindow.DataContext).client = new(ChatHelper.SERVER_PORT, ChatHelper.SERVER_IP, SignInGmailListBox.Text,
+                SignInPassword.Password, NetworkInterfaceUtility.GetRadminVPNIPAddress().ToString());
+            ((MainViewModel)Application.Current.MainWindow.DataContext).client.Init();
+            //Application.Current.MainWindow.Show();
+            //this.Close();
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)

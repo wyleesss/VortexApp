@@ -25,6 +25,8 @@ namespace Client.Services.Network.Utilits
         public const string NO_USERS_ONLINE = "no users online";
         public const string PROFILE = "Profile";
         public const string FILE_FILTER_ALL = "All files (*.*)|*.*";
+        public const string SERVER_IP = "26.144.152.222";
+        public const int SERVER_PORT = 10000;
         #endregion
 
         #region Registry Keys
@@ -123,7 +125,7 @@ namespace Client.Services.Network.Utilits
         AcceptFriendRequest,// прийом запиту на дружбу
         DeclineFriendRequest,// відмова від запиту на дружбу
         NewFriend,// щоб інший юзер оновив UI
-
+        CloseConnection, // нахуй з з'єднання з серваком
     }
 
     public class ConnectedClient

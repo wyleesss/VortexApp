@@ -1,16 +1,12 @@
-﻿using System.Runtime.InteropServices;
+﻿using Microsoft.Win32;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shell;
-using System.Windows.Threading;
+using VortexApp.UI.Helpers;
 using VortexApp.UI.MVVM.Model;
 using VortexApp.UI.MVVM.ViewModel;
-using VortexApp.UI.Helpers;
-using Microsoft.Win32;
-using System.IO;
 
 namespace VortexApp
 {
@@ -20,6 +16,7 @@ namespace VortexApp
     /// 
     public partial class MainWindow : Window
     {
+        public RegistrationWindow registrationWindow;
         public MainWindow()
         {
             InitializeComponent();
@@ -33,13 +30,20 @@ namespace VortexApp
             requestView.Filter = RequestsViewFilter;
 
             Visibility = Visibility.Hidden;
-            RegistrationWindow registrationWindow = new();
+            registrationWindow = new();
             registrationWindow.Show();
         }
-
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             WindowStyle = WindowStyle.SingleBorderWindow;
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
+                if (context.client != null)
+                {
+                    context.client.Disconect();
+                }
+            }));
             Application.Current.Shutdown();
         }
 
