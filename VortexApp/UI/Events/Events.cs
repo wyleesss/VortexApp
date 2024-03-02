@@ -1,6 +1,5 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
-using System.Windows.Forms;
 using VortexApp.UI.MVVM.Model;
 using VortexApp.UI.MVVM.ViewModel;
 
@@ -13,7 +12,6 @@ namespace VortexApp.UI.Events
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
                 var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
-
                 var contact = context.Contacts.Where(o => o.UserID == friendID).FirstOrDefault();
 
                 contact.Messages.Add(new MessageModel
@@ -29,6 +27,7 @@ namespace VortexApp.UI.Events
                     FontWeight = "Normal",
                     FirstMessage = true
                 });
+
             }));
         }
         public static void NewFriendReqUI(string nickname, string id)
