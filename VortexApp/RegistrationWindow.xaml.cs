@@ -105,6 +105,7 @@ namespace VortexApp
             ((MainViewModel)Application.Current.MainWindow.DataContext).client = new(ChatHelper.SERVER_PORT, ChatHelper.SERVER_IP, SignInGmailListBox.Text,
                 SignInPassword.Password, NetworkInterfaceUtility.GetRadminVPNIPAddress().ToString());
             ((MainViewModel)Application.Current.MainWindow.DataContext).client.Init();
+            //TODO
             //Application.Current.MainWindow.Show();
             //this.Close();
         }
