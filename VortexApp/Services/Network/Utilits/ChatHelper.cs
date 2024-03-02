@@ -125,6 +125,7 @@ namespace Client.Services.Network.Utilits
         AcceptFriendRequest,// прийом запиту на дружбу
         DeclineFriendRequest,// відмова від запиту на дружбу
         NewFriend,// щоб інший юзер оновив UI
+        FriendRequestFailed,// прийшла вірна гуідка але такого юзера немає взагалі
         CloseConnection, // нахуй з з'єднання з серваком
     }
 

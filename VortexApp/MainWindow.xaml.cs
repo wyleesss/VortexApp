@@ -241,11 +241,24 @@ namespace VortexApp
 
         private void AddContactButton_Click(object sender, RoutedEventArgs e)
         {
-            if (NewContactID.Text != "true")
+            Guid friendReq;
+            if (!Guid.TryParse(NewContactID.Text, out friendReq))
             {
                 NewContactIDError.Visibility = Visibility.Visible;
                 return;
             }
+            else
+            {
+                Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
+                    if (context.client != null)
+                    {
+                        context.client.SendFriendRequest(friendReq);
+                    }
+                }));
+            }
+
         }
 
         private void SendFileButton_Click(object sender, RoutedEventArgs e)
