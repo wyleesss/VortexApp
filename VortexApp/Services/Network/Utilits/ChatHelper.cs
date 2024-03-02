@@ -25,7 +25,7 @@ namespace Client.Services.Network.Utilits
         public const string NO_USERS_ONLINE = "no users online";
         public const string PROFILE = "Profile";
         public const string FILE_FILTER_ALL = "All files (*.*)|*.*";
-        public const string SERVER_IP = "26.144.152.222";
+        public const string SERVER_IP = "26.98.33.97";
         public const int SERVER_PORT = 10000;
         #endregion
 

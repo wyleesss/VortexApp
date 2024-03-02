@@ -120,9 +120,8 @@ namespace VortexApp
                 ContactsTextBlock.IsSelected = true;
                 RequestsTextBlock.IsSelected = false;
 
-                MainListView.ItemsSource = ((MainViewModel)DataContext).Contacts;
-                MainListView.SelectedItem = ((MainViewModel)DataContext).SelectedContact;
-                MainListView.ItemContainerStyle = (Style)FindResource("ContactCard");
+                MainListView.Visibility = Visibility.Visible;
+                RequestsListView.Visibility = Visibility.Hidden;
             }
         }
 
@@ -133,9 +132,8 @@ namespace VortexApp
                 RequestsTextBlock.IsSelected = true;
                 ContactsTextBlock.IsSelected = false;
 
-                MainListView.ItemsSource = ((MainViewModel)DataContext).Requests;
-                MainListView.SelectedItem = ((MainViewModel)DataContext).SelectedRequest;
-                MainListView.ItemContainerStyle = (Style)FindResource("RequestCard");
+                RequestsListView.Visibility = Visibility.Visible;
+                MainListView.Visibility = Visibility.Hidden;
             }
         }
 

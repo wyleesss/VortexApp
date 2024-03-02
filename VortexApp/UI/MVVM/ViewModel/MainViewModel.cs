@@ -53,12 +53,12 @@ namespace VortexApp.UI.MVVM.ViewModel
         private ContactModel _selreq;
         public ContactModel SelectedRequest
         {
-            get { return _selcont; }
+            get { return _selreq; }
             set
             {
-                if (_selcont != value)
+                if (_selreq != value)
                 {
-                    _selcont = value;
+                    _selreq = value;
                     OnPropertyChanged("SelectedRequest");
                 }
             }
@@ -164,12 +164,12 @@ namespace VortexApp.UI.MVVM.ViewModel
             File.Copy(selectedFolderPath, destinationFilePath, true);
         }
 
-        public void ApplyRequest()
+        public void ApplyRequest(string userID)
         {
 
         }
 
-        public void DeclineRequest()
+        public void DeclineRequest(string userID)
         {
 
         }

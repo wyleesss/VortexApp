@@ -411,6 +411,16 @@
                           ItemContainerStyle="{StaticResource ContactCard}"
                           SelectionChanged="MainListView_SelectionChanged"/>
 
+                <ListView x:Name="RequestsListView" 
+                          Grid.Row="1" 
+                          ItemsSource="{Binding Requests}"
+                          SelectedItem="{Binding SelectedRequest}"
+                          Background="Transparent" 
+                          BorderThickness="0"
+                          ItemContainerStyle="{StaticResource RequestCard}"
+                          Visibility="Hidden"/>
+
+
             </Grid>
 
 
