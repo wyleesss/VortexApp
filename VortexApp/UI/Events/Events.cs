@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Forms;
 using VortexApp.UI.MVVM.Model;
 using VortexApp.UI.MVVM.ViewModel;
 
@@ -7,6 +8,29 @@ namespace VortexApp.UI.Events
 {
     internal class UIEvents
     {
+        public static void NewFileUI(string friendID, string filename)
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
+
+                var contact = context.Contacts.Where(o => o.UserID == friendID).FirstOrDefault();
+
+                contact.Messages.Add(new MessageModel
+                {
+                    Message = "file: " + filename,
+                    Username = contact.Username,
+                    Time = DateTime.Now,
+                    ImageSource = "./UI/Resources/DefaultUserLogo.png",
+                    Color = "#FFC2C2C2",
+                    IsFocusable = false,
+                    IsClickable = true,
+                    Cursor = "Arrow",
+                    FontWeight = "Normal",
+                    FirstMessage = true
+                });
+            }));
+        }
         public static void NewFriendReqUI(string nickname, string id)
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>

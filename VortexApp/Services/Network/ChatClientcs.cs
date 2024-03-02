@@ -241,7 +241,7 @@ namespace Client.Services.Network
             }
             else if (data.Command == Command.Accept_File)
             {
-                //TODO зберігати ін меморі або хз файл зробити хуй зна (назва файлу)
+                UIEvents.NewFileUI(data.From, data.Message);
             }
             else if (data.Command == Command.Send_Message)
             {
