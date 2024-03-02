@@ -53,9 +53,8 @@ namespace UDP_SENDER_FILE_TEST
         }
 
 
-        public void GetFile(string filename)
+        public void GetFile(string filename, string path)
         {
-            Console.WriteLine("Requesting file: {0}", filename);
             ReceiverState state = ReceiverState.RequestingFile;
             byte[] checksum = null;
             UInt32 fileSize = 0;
@@ -110,7 +109,6 @@ namespace UDP_SENDER_FILE_TEST
                             if (ACK.Message == filename)
                             {
                                 state = ReceiverState.WaitingForInfo;
-                                Console.WriteLine("They have the file, waiting for INFO...");
                             }
                             else
                                 ResetTransferState();
@@ -126,10 +124,6 @@ namespace UDP_SENDER_FILE_TEST
                             checksum = INFO.Checksum;
                             numBlocks = INFO.BlockCount;
 
-                            Console.WriteLine("Received an INFO packet:");
-                            Console.WriteLine("  Max block size: {0}", INFO.MaxBlockSize);
-                            Console.WriteLine("  Num blocks: {0}", INFO.BlockCount);
-
                             AckPacket ACK = new AckPacket();
                             ACK.Message = "INFO";
                             buffer = ACK.GetBytes();
@@ -144,7 +138,6 @@ namespace UDP_SENDER_FILE_TEST
                             _blockRequestQueue.Enqueue(id);
                         totalRequestedBlocks += numBlocks;
 
-                        Console.WriteLine("Starting Transfer...");
                         transferTimer.Start();
                         state = ReceiverState.Transfering;
                         break;
@@ -159,7 +152,6 @@ namespace UDP_SENDER_FILE_TEST
                             buffer = REQB.GetBytes();
                             _client.Send(buffer, buffer.Length);
 
-                            Console.WriteLine("Sent request for Block #{0}", id);
                         }
 
                         bool isSend = (nm == null) ? false : (nm.Packet.IsSend);
@@ -169,7 +161,6 @@ namespace UDP_SENDER_FILE_TEST
                             Block block = SEND.Block;
                             _blocksReceived.Add(block.Number, block);
 
-                            Console.WriteLine("Received Block #{0} [{1} bytes]", block.Number, block.Data.Length);
                         }
 
                         if ((_blockRequestQueue.Count == 0) && (_blocksReceived.Count != numBlocks))
@@ -195,14 +186,7 @@ namespace UDP_SENDER_FILE_TEST
                         buffer = BYE.GetBytes();
                         _client.Send(buffer, buffer.Length);
 
-                        Console.WriteLine("Transfer successful; it took {0:0.000}s with a success ratio of {1:0.000}.",
-                            transferTimer.Elapsed.TotalSeconds, (double)numBlocks / (double)totalRequestedBlocks);
-                        Console.WriteLine("Decompressing the Blocks...");
-
-                        if (_saveBlocksToFile(filename, checksum, fileSize))
-                            Console.WriteLine("Saved file as {0}.", filename);
-                        else
-                            Console.WriteLine("There was some trouble in saving the Blocks to {0}.", filename);
+                        if (_saveBlocksToFile(filename, checksum, fileSize, path)) { }
 
                         _running = false;
                         break;
@@ -217,15 +201,11 @@ namespace UDP_SENDER_FILE_TEST
 
             if (_shutdownRequested && wasRunning)
             {
-                Console.WriteLine("User canceled transfer.");
 
                 Packet BYE = new Packet(Packet.Bye);
                 byte[] buffer = BYE.GetBytes();
                 _client.Send(buffer, buffer.Length);
             }
-
-            if (senderQuit && wasRunning)
-                Console.WriteLine("The sender quit on us, canceling the transfer.");
 
             ResetTransferState();
             _shutdownRequested = false;
@@ -255,7 +235,7 @@ namespace UDP_SENDER_FILE_TEST
             }
         }
 
-        private bool _saveBlocksToFile(string filename, byte[] networkChecksum, UInt32 fileSize)
+        private bool _saveBlocksToFile(string filename, byte[] networkChecksum, UInt32 fileSize, string path)
         {
             bool good = false;
 
@@ -286,7 +266,7 @@ namespace UDP_SENDER_FILE_TEST
                         throw new Exception("Checksum of uncompressed blocks doesn't match that of INFO packet.");
 
                     uncompressedStream.Position = 0;
-                    using (FileStream fileStream = new FileStream("C:\\Users\\admin1\\Desktop\\Test\\" + filename, FileMode.Create))
+                    using (FileStream fileStream = new FileStream(path + filename, FileMode.Create))
                         uncompressedStream.CopyTo(fileStream);
                 }
 
@@ -294,8 +274,6 @@ namespace UDP_SENDER_FILE_TEST
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not save the blocks to \"{0}\", reason:", filename);
-                Console.WriteLine(e.Message);
             }
 
             return good;

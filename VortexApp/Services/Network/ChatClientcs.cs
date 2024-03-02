@@ -234,6 +234,11 @@ namespace Client.Services.Network
             {
                 UIEvents.UserNotConnectedUI(data.Message);
             }
+            else if (data.Command == Command.StopAccept_File)
+            {
+                fileThread = null;
+                GC.Collect();
+            }
             else if (data.Command == Command.Accept_File)
             {
                 //TODO зберігати ін меморі або хз файл зробити хуй зна (назва файлу)
@@ -320,7 +325,7 @@ namespace Client.Services.Network
         {
             server.Client.Send(data.ToBytes());
         }
-        public bool GetFile(string filename)
+        public bool GetFile(string filename, string path)
         {
             if (Aviable_server_port == 0)
             {
@@ -331,7 +336,7 @@ namespace Client.Services.Network
             {
                 SendComamnd(new Data(Command.Send_File, Id.ToString(), "Server", IP, filename + " " + Aviable_server_port.ToString()));
                 Thread.Sleep(1500);
-                FileTool.ReceiverFile(ServerAddress, Aviable_server_port, filename);
+                FileTool.ReceiverFile(ServerAddress, Aviable_server_port, filename, path);
                 Aviable_server_port = 0;
                 return true;
             }
@@ -345,11 +350,13 @@ namespace Client.Services.Network
         private void SendFile(string filename, string friend_ID)
         {
             fileThread = new Thread(() => FileTool.SendFile(_file_path_transfer, file_port));
+            Data data = new(Command.Accept_File, Id.ToString(), friend_ID, IP, filename);
+            SendComamnd(data);
             fileThread.Start();
         }
         public void TrySendFile(string filename, string friend_ID)
         {
-            Data data = new(Command.Accept_File, Id.ToString(), friend_ID, IP, filename);
+            Data data = new(Command.TryAccept_File, Id.ToString(), friend_ID, IP, filename);
             SendComamnd(data);
         }
         public void Disconect()

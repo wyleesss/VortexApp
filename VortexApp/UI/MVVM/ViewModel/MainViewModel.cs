@@ -150,22 +150,18 @@ namespace VortexApp.UI.MVVM.ViewModel
             });
         }
 
-        public void DownloadFile(VistaFolderBrowserDialog openFolderDialog)
+        public void DownloadFile(VistaFolderBrowserDialog openFolderDialog, string filename)
         {
             string destinationFilePath = openFolderDialog.SelectedPath;
-            string solutionFolderPath = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName;
-            string selectedFolderPath = Path.Combine(solutionFolderPath, "Services//FileSend//FileBuff//");
-
-            selectedFolderPath += Directory.GetFiles(selectedFolderPath)
-                                           .Select(Path.GetFileName)
-                                           .ToArray()
-                                           .ElementAt(0);
-
-            string fileName = Path.GetFileName(selectedFolderPath);
-
-            destinationFilePath = Path.Combine(destinationFilePath, fileName);
-
-            File.Copy(selectedFolderPath, destinationFilePath, true);
+            if (!client.GetFile(filename, destinationFilePath))
+            {
+                Thread.Sleep(700);
+                var acceptFileThread = new Thread(() =>
+                {
+                    client.GetFile(filename, destinationFilePath);
+                });
+                acceptFileThread.Start();
+            }
         }
 
         public void ApplyRequest(string userID)

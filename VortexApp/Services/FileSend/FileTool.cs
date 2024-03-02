@@ -14,11 +14,11 @@ namespace Client.Services.FileSend
         }
 
 
-        public static void ReceiverFile(string server_ip, int port, string filename)
+        public static void ReceiverFile(string server_ip, int port, string filename, string path)
         {
             UdpFileReceiver fileReceiver = new(server_ip, port);
 
-            fileReceiver.GetFile(filename);
+            fileReceiver.GetFile(filename, path);
             fileReceiver.Close();
         }
     }

@@ -1,11 +1,6 @@
-﻿using Microsoft.Win32;
-using Ookii.Dialogs.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Ookii.Dialogs.Wpf;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using VortexApp.UI.MVVM.ViewModel;
 
@@ -23,7 +18,9 @@ namespace VortexApp.UI.Themes
                 return;
             }
 
-            ((MainViewModel)Application.Current.MainWindow.DataContext).DownloadFile(folderBrowserDialog);
+            string filename = ((TextBox)sender).Text.Substring(6);
+
+            ((MainViewModel)Application.Current.MainWindow.DataContext).DownloadFile(folderBrowserDialog, filename);
         }
     }
 }
