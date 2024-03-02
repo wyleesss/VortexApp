@@ -198,7 +198,7 @@ namespace Client.Services.Network
                 }
                 else if (int.Parse(parts[secondData]) > 0)
                 {
-                    for (int step = 4, i = 0; i < int.Parse(parts[secondData]); step += 2, i++)
+                    for (int step = 5, i = 0; i < int.Parse(parts[secondData]); step += 2, i++)
                     {
                         FriendsRequests.Add(Guid.Parse(parts[step]), parts[step + 1]);
                     }

@@ -294,7 +294,7 @@
                                             PreviewMouseDown="RequestsTextBlock_PreviewMouseDown"/>
                 </StackPanel>
                 <TextBlock x:Name="NewMessagesCount"
-                           Text="0" 
+                           Text="{Binding ContactsCount, Converter={StaticResource NumberToLimitedStringConverter}}" 
                            FontFamily="Calibri Light"
                            VerticalAlignment="Top" 
                            HorizontalAlignment="Left"

@@ -81,6 +81,7 @@ namespace VortexApp.UI.MVVM.ViewModel
         }
 
         public int RequestsCount => Requests.Count;
+        public int ContactsCount => Contacts.Count;
 
         public MainViewModel()
         {
@@ -107,6 +108,7 @@ namespace VortexApp.UI.MVVM.ViewModel
             });
 
             Requests.CollectionChanged += (s, e) => OnPropertyChanged("RequestsCount");
+            Contacts.CollectionChanged += (s, e) => OnPropertyChanged("ContactsCount");
         }
 
         public void SendFile(Microsoft.Win32.OpenFileDialog openFileDialog)
@@ -131,7 +133,7 @@ namespace VortexApp.UI.MVVM.ViewModel
             string destinationFilePath = Path.Combine(destinationFolderPath, Path.GetFileName(selectedFilePath));
             File.Copy(selectedFilePath, destinationFilePath);
 
-            client.SendFile(openFileDialog.SafeFileName, SelectedContact.UserID);
+            client.TrySendFile(openFileDialog.SafeFileName, SelectedContact.UserID);
 
             SelectedContact.Messages.Add(new MessageModel
             {
