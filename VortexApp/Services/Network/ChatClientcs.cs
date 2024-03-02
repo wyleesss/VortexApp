@@ -262,6 +262,10 @@ namespace Client.Services.Network
                 voiceCallHandler.Send();
 
             }
+            else if (data.Command == Command.FriendRequestGood)
+            {
+                UIEvents.FriendReqGOOD();
+            }
             else if (data.Command == Command.FriendRequestFailed)
             {
                 UIEvents.FriendReqFailedUI();

@@ -78,6 +78,9 @@ namespace VortexApp
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
+            AddContactInfoUserErrorLabel.Visibility = Visibility.Hidden;
+            AddContactInfoSuccessLabel.Visibility = Visibility.Hidden;
+            NewContactIDError.Visibility = Visibility.Hidden;
             AddContactInfo.Visibility = Visibility.Visible;
         }
 
@@ -244,6 +247,9 @@ namespace VortexApp
             Guid friendReq;
             if (!Guid.TryParse(NewContactID.Text, out friendReq))
             {
+                AddContactInfoUserErrorLabel.Visibility = Visibility.Hidden;
+                AddContactInfoSuccessLabel.Visibility = Visibility.Hidden;
+                NewContactIDError.Visibility = Visibility.Hidden;
                 NewContactIDError.Visibility = Visibility.Visible;
                 return;
             }
@@ -254,6 +260,9 @@ namespace VortexApp
                     var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
                     if (context.client != null)
                     {
+                        AddContactInfoUserErrorLabel.Visibility = Visibility.Hidden;
+                        AddContactInfoSuccessLabel.Visibility = Visibility.Hidden;
+                        NewContactIDError.Visibility = Visibility.Hidden;
                         context.client.SendFriendRequest(friendReq);
                     }
                 }));

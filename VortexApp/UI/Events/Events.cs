@@ -7,13 +7,30 @@ namespace VortexApp.UI.Events
 {
     internal class UIEvents
     {
+        public static void FriendReqGOOD()
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                var mainwindow = (MainWindow)Application.Current.MainWindow;
+                mainwindow.AddContactInfoUserErrorLabel.Visibility = Visibility.Hidden;
+                mainwindow.NewContactIDError.Visibility = Visibility.Hidden;
+
+                mainwindow.AddContactInfoSuccessLabel.Visibility = Visibility.Visible;
+                mainwindow.AddContactInfo.Visibility = Visibility.Visible;
+            }));
+        }
+
         public static void FriendReqFailedUI()
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
                 var mainwindow = (MainWindow)Application.Current.MainWindow;
+                mainwindow.AddContactInfoSuccessLabel.Visibility = Visibility.Hidden;
+                mainwindow.AddContactInfoUserErrorLabel.Visibility = Visibility.Hidden;
+                mainwindow.NewContactIDError.Visibility = Visibility.Hidden;
+
                 mainwindow.AddContactInfo.Visibility = Visibility.Visible;
-                mainwindow.NewContactIDError.Visibility = Visibility.Visible;
+                mainwindow.AddContactInfoUserErrorLabel.Visibility = Visibility.Visible;
             }));
         }
         public static void SendMessageUI(string message, string friendID)
