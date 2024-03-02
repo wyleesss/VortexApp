@@ -49,6 +49,21 @@ namespace VortexApp.UI.MVVM.ViewModel
                 }
             }
         }
+
+        private ContactModel _selreq;
+        public ContactModel SelectedRequest
+        {
+            get { return _selcont; }
+            set
+            {
+                if (_selcont != value)
+                {
+                    _selcont = value;
+                    OnPropertyChanged("SelectedRequest");
+                }
+            }
+        }
+
         public ContactModel? CallingContact { get; set; }
 
         private string _message;
@@ -147,6 +162,16 @@ namespace VortexApp.UI.MVVM.ViewModel
             destinationFilePath = Path.Combine(destinationFilePath, fileName);
 
             File.Copy(selectedFolderPath, destinationFilePath, true);
+        }
+
+        public void ApplyRequest()
+        {
+
+        }
+
+        public void DeclineRequest()
+        {
+
         }
     }
 }

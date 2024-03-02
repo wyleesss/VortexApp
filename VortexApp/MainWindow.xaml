@@ -409,7 +409,7 @@
                           Background="Transparent" 
                           BorderThickness="0"
                           ItemContainerStyle="{StaticResource ContactCard}"
-                          SelectionChanged="MainListView_SelectionChanged">
+                          SelectionChanged="MainListView_SelectionChanged"/>
 
             </Grid>
 

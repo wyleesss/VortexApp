@@ -121,6 +121,7 @@ namespace VortexApp
                 RequestsTextBlock.IsSelected = false;
 
                 MainListView.ItemsSource = ((MainViewModel)DataContext).Contacts;
+                MainListView.SelectedItem = ((MainViewModel)DataContext).SelectedContact;
                 MainListView.ItemContainerStyle = (Style)FindResource("ContactCard");
             }
         }
@@ -133,6 +134,7 @@ namespace VortexApp
                 ContactsTextBlock.IsSelected = false;
 
                 MainListView.ItemsSource = ((MainViewModel)DataContext).Requests;
+                MainListView.SelectedItem = ((MainViewModel)DataContext).SelectedRequest;
                 MainListView.ItemContainerStyle = (Style)FindResource("RequestCard");
             }
         }
