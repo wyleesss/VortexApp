@@ -1,6 +1,7 @@
 ﻿using Client.Services.Audio;
 using Client.Services.FileSend;
 using Client.Services.Network.Utilits;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
 using System.Security.Cryptography;
@@ -47,10 +48,11 @@ namespace Client.Services.Network
 
         public bool IsConnected { get; set; }
 
-        private string _file_path_transfer = "E:\\Курсова\\Client\\Client\\Client\\Services\\FileSend\\FileBuff";
+        private string _file_path_transfer = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.Parent.FullName, "Services//FileSend//FileBuff");
         private int file_port = 63001;
         private VoiceCallHandler voiceCallHandler;
         private int Aviable_server_port = 0;
+        private Thread fileThread;
         #endregion
 
         #region Consructor
@@ -224,6 +226,14 @@ namespace Client.Services.Network
             {
                 Aviable_server_port = int.Parse(data.Message);
             }
+            else if (data.Command == Command.TryFileGood)
+            {
+                SendFile(data.Message, data.To);
+            }
+            else if (data.Command == Command.TryFileBad)
+            {
+                UIEvents.UserNotConnectedUI(data.Message);
+            }
             else if (data.Command == Command.Accept_File)
             {
                 //TODO зберігати ін меморі або хз файл зробити хуй зна (назва файлу)
@@ -272,17 +282,11 @@ namespace Client.Services.Network
             }
             else if (data.Command == Command.FriendRequest)
             {
-
-                //refresh UI появився новий реквест
-
-
+                UIEvents.NewFriendReqUI(data.Message, data.To);
             }
             else if (data.Command == Command.NewFriend)
             {
-
-                //refresh UI появився новий друг
-
-
+                UIEvents.NewFriendUI(data.Message, data.To);
             }
             else if (data.Command == Command.UserNotConnected)
             {
@@ -338,11 +342,15 @@ namespace Client.Services.Network
             Data data = new(Command.Send_Message, Id.ToString(), friend_ID, IP, message);
             SendComamnd(data);
         }
-        public void SendFile(string filename, string friend_ID)
+        private void SendFile(string filename, string friend_ID)
+        {
+            fileThread = new Thread(() => FileTool.SendFile(_file_path_transfer, file_port));
+            fileThread.Start();
+        }
+        public void TrySendFile(string filename, string friend_ID)
         {
             Data data = new(Command.Accept_File, Id.ToString(), friend_ID, IP, filename);
             SendComamnd(data);
-            FileTool.SendFile(_file_path_transfer, file_port);
         }
         public void Disconect()
         {

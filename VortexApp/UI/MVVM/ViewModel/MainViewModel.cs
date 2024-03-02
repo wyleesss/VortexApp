@@ -131,6 +131,8 @@ namespace VortexApp.UI.MVVM.ViewModel
             string destinationFilePath = Path.Combine(destinationFolderPath, Path.GetFileName(selectedFilePath));
             File.Copy(selectedFilePath, destinationFilePath);
 
+            client.SendFile(openFileDialog.SafeFileName, SelectedContact.UserID);
+
             SelectedContact.Messages.Add(new MessageModel
             {
                 Message = "file: " + openFileDialog.SafeFileName,
@@ -166,12 +168,28 @@ namespace VortexApp.UI.MVVM.ViewModel
 
         public void ApplyRequest(string userID)
         {
-
+            client.AcceptFriendRequest(Guid.Parse(userID));
+            foreach (var req in Requests)
+            {
+                if (req.UserID == userID)
+                {
+                    Requests.Remove(req);
+                    return;
+                }
+            }
         }
 
         public void DeclineRequest(string userID)
         {
-
+            client.DeclineFriendRequest(Guid.Parse(userID));
+            foreach (var req in Requests)
+            {
+                if (req.UserID == userID)
+                {
+                    Requests.Remove(req);
+                    return;
+                }
+            }
         }
     }
 }

@@ -51,13 +51,7 @@ namespace UDP_SENDER_FILE_TEST
             if (_transferableFiles.Count != 0)
             {
                 Running = true;
-
-                Console.WriteLine("I'll transfer these files:");
-                foreach (string s in _transferableFiles)
-                    Console.WriteLine("  {0}", s);
             }
-            else
-                Console.WriteLine("I don't have any files to transfer.");
         }
 
         public void Shutdown()
@@ -88,7 +82,6 @@ namespace UDP_SENDER_FILE_TEST
                 if (isBye)
                 {
                     ResetTransferState();
-                    Console.WriteLine("Received a BYE message, waiting for next client.");
                 }
                 switch (state)
                 {
@@ -101,7 +94,6 @@ namespace UDP_SENDER_FILE_TEST
                             AckPacket ACK = new AckPacket();
                             requestedFile = REQF.Filename;
 
-                            Console.WriteLine("{0} has requested file file \"{1}\".", nm.Sender, requestedFile);
 
                             if (_transferableFiles.Contains(requestedFile))
                             {
@@ -109,7 +101,6 @@ namespace UDP_SENDER_FILE_TEST
                                 ACK.Message = requestedFile;
                                 state = SenderState.PreparingFileForTransfer;
 
-                                Console.WriteLine("  We have it.");
                             }
                             else
                                 ResetTransferState();
@@ -133,7 +124,6 @@ namespace UDP_SENDER_FILE_TEST
                             byte[] buffer = INFO.GetBytes();
                             _client.Send(buffer, buffer.Length, receiver);
 
-                            Console.WriteLine("Sending INFO, waiting for ACK...");
                             state = SenderState.WaitingForInfoACK;
                         }
                         else
@@ -147,7 +137,6 @@ namespace UDP_SENDER_FILE_TEST
                             AckPacket ACK = new AckPacket(nm.Packet);
                             if (ACK.Message == "INFO")
                             {
-                                Console.WriteLine("Starting Transfer...");
                                 state = SenderState.Transfering;
                             }
                         }
@@ -158,7 +147,6 @@ namespace UDP_SENDER_FILE_TEST
                         if (isRequestBlock)
                         {
                             RequestBlockPacket REQB = new RequestBlockPacket(nm.Packet);
-                            Console.WriteLine("Got request for Block #{0}", REQB.Number);
 
                             Block block = _blocks[REQB.Number];
                             SendPacket SEND = new SendPacket();
@@ -166,7 +154,6 @@ namespace UDP_SENDER_FILE_TEST
 
                             byte[] buffer = SEND.GetBytes();
                             _client.Send(buffer, buffer.Length, nm.Sender);
-                            Console.WriteLine("Sent Block #{0} [{1} bytes]", block.Number, block.Data.Length);
                         }
                         break;
                 }
@@ -209,7 +196,6 @@ namespace UDP_SENDER_FILE_TEST
 
         private bool _prepareFile(string requestedFile, out byte[] checksum, out UInt32 fileSize)
         {
-            Console.WriteLine("Preparing the file to send...");
             bool good = false;
             fileSize = 0;
 
@@ -218,8 +204,6 @@ namespace UDP_SENDER_FILE_TEST
                 byte[] fileBytes = File.ReadAllBytes(Path.Combine(FilesDirectory, requestedFile));
                 checksum = _hasher.ComputeHash(fileBytes);
                 fileSize = Convert.ToUInt32(fileBytes.Length);
-                Console.WriteLine("{0} is {1} bytes large.", requestedFile, fileSize);
-
                 Stopwatch timer = new Stopwatch();
                 using (MemoryStream compressedStream = new MemoryStream())
                 {
@@ -243,16 +227,11 @@ namespace UDP_SENDER_FILE_TEST
                         b.Data = data;
                         _blocks.Add(b.Number, b);
                     }
-                    Console.WriteLine("{0} compressed is {1} bytes large in {2:0.000}s.", requestedFile, compressedSize, timer.Elapsed.TotalSeconds);
-                    Console.WriteLine("Sending the file in {0} blocks, using a max block size of {1} bytes.", _blocks.Count, MaxBlockSize);
                     good = true;
                 }
             }
             catch (Exception e)
             {
-                Console.WriteLine("Could not prepare the file for transfer, reason:");
-                Console.WriteLine(e.Message);
-
                 _blocks.Clear();
                 checksum = null;
             }

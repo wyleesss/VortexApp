@@ -7,6 +7,35 @@ namespace VortexApp.UI.Events
 {
     internal class UIEvents
     {
+        public static void NewFriendReqUI(string nickname, string id)
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
+
+                context.Requests.Add(new RequestModel()
+                {
+                    Username = nickname,
+                    UserID = id,
+                    ImageSource = "./UI/Resources/DefaultUserLogo.png"
+                });
+            }));
+        }
+        public static void NewFriendUI(string nickname, string id)
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
+
+                context.Contacts.Add(new ContactModel()
+                {
+                    Username = nickname,
+                    UserID = id,
+                    ImageSource = "./UI/Resources/DefaultUserLogo.png",
+                    Messages = new ObservableCollection<MessageModel>()
+                });
+            }));
+        }
         public static void FriendReqGOOD()
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
