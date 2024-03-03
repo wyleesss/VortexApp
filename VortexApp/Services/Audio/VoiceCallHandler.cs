@@ -38,14 +38,18 @@ namespace Client.Services.Audio
             {
                 while (isReceiving)
                 {
-                    byte[] receivedData = udpClientReceive.Receive(ref remoteEndPointReceive);
+                    try
+                    {
+                        byte[] receivedData = udpClientReceive.Receive(ref remoteEndPointReceive);
 
-                    WaveOutEvent _waveOut = new WaveOutEvent();
-                    IWaveProvider provider = new RawSourceWaveStream(new MemoryStream(receivedData), new WaveFormat(44100, 32, 1));
-                    _waveOut.Init(provider);
-                    _waveOut.Play();
+                        WaveOutEvent _waveOut = new WaveOutEvent();
+                        IWaveProvider provider = new RawSourceWaveStream(new MemoryStream(receivedData), new WaveFormat(44100, 32, 1));
+                        _waveOut.Init(provider);
+                        _waveOut.Play();
 
-                    Thread.Sleep(10);
+                        Thread.Sleep(10);
+                    }
+                    catch (Exception ex) { }
                 }
             });
             receiveThread.Start();
