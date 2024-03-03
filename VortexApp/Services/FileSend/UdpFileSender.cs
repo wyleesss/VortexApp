@@ -82,6 +82,8 @@ namespace UDP_SENDER_FILE_TEST
                 if (isBye)
                 {
                     ResetTransferState();
+                    _client.Close();
+                    return;
                 }
                 switch (state)
                 {
