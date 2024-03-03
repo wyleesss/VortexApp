@@ -266,7 +266,7 @@ namespace Client.Services.Network
             }
             else if (data.Command == Command.NewFriend)
             {
-                UIEvents.NewFriendUI(data.Message, data.To);
+                UIEvents.NewFriendUI(data.Message, data.From);
             }
             else if (data.Command == Command.UserNotConnected)
             {
