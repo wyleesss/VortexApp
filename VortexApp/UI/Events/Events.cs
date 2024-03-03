@@ -11,6 +11,7 @@ namespace VortexApp.UI.Events
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
+                ((MainWindow)Application.Current.MainWindow).CallResponseWaiting.Visibility = Visibility.Hidden;
                 ((MainViewModel)Application.Current.MainWindow.DataContext).client.EndCallAccept();
                 foreach (var i in ((MainViewModel)Application.Current.MainWindow.DataContext).Contacts)
                 {
@@ -52,6 +53,7 @@ namespace VortexApp.UI.Events
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
+                ((MainWindow)Application.Current.MainWindow).CallResponseWaiting.Visibility = Visibility.Hidden;
                 ((MainViewModel)Application.Current.MainWindow.DataContext).client.StartCallAccept(IP);
                 foreach (var i in ((MainViewModel)Application.Current.MainWindow.DataContext).Contacts)
                 {
