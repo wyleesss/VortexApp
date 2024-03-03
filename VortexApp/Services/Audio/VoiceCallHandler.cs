@@ -50,7 +50,11 @@ namespace Client.Services.Audio
             });
             receiveThread.Start();
         }
-        public void StopReceive() { isReceiving = false; }
+        public void StopReceive()
+        {
+            isReceiving = false;
+            udpClientReceive.Close();
+        }
         public void Send()
         {
             try
@@ -65,6 +69,10 @@ namespace Client.Services.Audio
             }
             catch { }
         }
-        public void StopSend() { IsSending = false; waveIn.StopRecording(); }
+        public void StopSend()
+        {
+            IsSending = false; waveIn.StopRecording();
+            udpClientSend.Close();
+        }
     }
 }
