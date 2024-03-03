@@ -314,6 +314,13 @@ namespace VortexApp
                 Username = ((MainViewModel)DataContext).SelectedContact.Username
             };
 
+            ((MainViewModel)DataContext).client.TryCall(Guid.Parse(((MainViewModel)DataContext).SelectedContact.UserID));
+            ((MainViewModel)DataContext).SelectedContact.Messages.Add(new MessageModel
+            {
+                Username = "Request Status",
+                Time = DateTime.Now,
+                Message = "Request has been sent",
+            });
             CallResponseWaiting.Visibility = Visibility.Visible;
         }
     }

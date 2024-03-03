@@ -256,15 +256,15 @@ namespace Client.Services.Network
             else if (data.Command == Command.Request_Call)
             {
 
-                //чи юзер прийняв дзвінок
+                UIEvents.RequestCallUI(data.From);
 
                 //yes
-                IPEndPoint ipEndPointReceive = new(IPAddress.Parse("127.0.0.1"), 60202);// 60202
-                IPEndPoint ipEndPointSend = new(IPAddress.Parse(data.ClientAddress), 60201);// 60201
-                SendComamnd(new(Command.Accept_Call, data.To, data.From, IP, "a"));
-                voiceCallHandler = new(ipEndPointReceive, ipEndPointSend);
-                voiceCallHandler.Receive();
-                voiceCallHandler.Send();
+                //IPEndPoint ipEndPointReceive = new(IPAddress.Parse("127.0.0.1"), 60202);// 60202
+                //IPEndPoint ipEndPointSend = new(IPAddress.Parse(data.ClientAddress), 60201);// 60201
+                //SendComamnd(new(Command.Accept_Call, data.To, data.From, IP, "a"));
+                //voiceCallHandler = new(ipEndPointReceive, ipEndPointSend);
+                //voiceCallHandler.Receive();
+                //voiceCallHandler.Send();
 
             }
             else if (data.Command == Command.Accept_Call)

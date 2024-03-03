@@ -63,8 +63,20 @@ namespace VortexApp.UI.MVVM.ViewModel
                 }
             }
         }
+        private ContactModel? _callContact;
+        public ContactModel? CallingContact
+        {
+            get { return _callContact; }
+            set
+            {
+                if (_callContact != value)
+                {
+                    _callContact = value;
+                    OnPropertyChanged("CallingContact");
+                }
+            }
+        }
 
-        public ContactModel? CallingContact { get; set; }
 
         private string _message;
         public string Message

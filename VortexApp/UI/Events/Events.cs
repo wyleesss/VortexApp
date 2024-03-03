@@ -7,6 +7,19 @@ namespace VortexApp.UI.Events
 {
     internal class UIEvents
     {
+        public static void RequestCallUI(string friendID)
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
+                var contact = context.Contacts.Where(o => o.UserID == friendID).FirstOrDefault();
+                var mainwindow = (MainWindow)Application.Current.MainWindow;
+
+                context.CallingContact = contact;
+                mainwindow.CallRequest.Visibility = Visibility.Visible;
+
+            }));
+        }
         public static void NewFileUI(string friendID, string filename)
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
