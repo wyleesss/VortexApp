@@ -9,27 +9,33 @@ namespace VortexApp.UI.Events
     {
         public static void EndCallUI()
         {
-            ((MainViewModel)Application.Current.MainWindow.DataContext).client.EndCallAccept();
-            ((MainViewModel)Application.Current.MainWindow.DataContext).SelectedContact.Messages.Add(new MessageModel
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
-                Username = "Request Status",
-                Time = DateTime.Now,
-                Message = "Call End",
-            });
-            ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact = null;
-            ((MainWindow)Application.Current.MainWindow).callWindow.Close();
+                ((MainViewModel)Application.Current.MainWindow.DataContext).client.EndCallAccept();
+                ((MainViewModel)Application.Current.MainWindow.DataContext).SelectedContact.Messages.Add(new MessageModel
+                {
+                    Username = "Request Status",
+                    Time = DateTime.Now,
+                    Message = "Call End",
+                });
+                ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact = null;
+                ((MainWindow)Application.Current.MainWindow).callWindow.Close();
+            }));
         }
         public static void CancelCallUI()
         {
-            ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
-            ((MainViewModel)Application.Current.MainWindow.DataContext).client.CancelCall(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID);
-            ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Messages.Add(new MessageModel
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
-                Username = "Request Status",
-                Time = DateTime.Now,
-                Message = "Request has been cancelled",
-            });
-            ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact = null;
+                ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
+                ((MainViewModel)Application.Current.MainWindow.DataContext).client.CancelCall(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID);
+                ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Messages.Add(new MessageModel
+                {
+                    Username = "Request Status",
+                    Time = DateTime.Now,
+                    Message = "Request has been cancelled",
+                });
+                ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact = null;
+            }));
         }
         public static void AcceptCallUI(string IP)
         {
