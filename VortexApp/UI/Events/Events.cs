@@ -49,9 +49,8 @@ namespace VortexApp.UI.Events
                     }
                 }
                 ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
-                CallWindow callWindow = new();
-                callWindow.Title = ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Username + " - Call";
-                callWindow.Show();
+                ((MainWindow)Application.Current.MainWindow).callWindow.Title = ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Username + " - Call";
+                ((MainWindow)Application.Current.MainWindow).callWindow.Show();
 
             }));
         }

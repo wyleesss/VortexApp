@@ -32,6 +32,7 @@ namespace VortexApp
 
             Visibility = Visibility.Hidden;
             registrationWindow = new();
+            callWindow = new();
             registrationWindow.Show();
         }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
@@ -297,7 +298,6 @@ namespace VortexApp
                 Message = "Call Started",
             });
             CallRequest.Visibility = Visibility.Hidden;
-            callWindow = new();
             callWindow.Title = ((MainViewModel)DataContext).CallingContact.Username + " - Call";
             callWindow.Show();
         }

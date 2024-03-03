@@ -28,6 +28,8 @@ namespace VortexApp
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = new TimeSpan(0, 0, 1);
             timer.Start();
+
+            var test = ((MainViewModel)DataContext).Contacts;
         }
 
         private void timer_Tick(object sender, EventArgs e)
