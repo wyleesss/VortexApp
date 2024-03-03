@@ -118,6 +118,7 @@ namespace Client.Services.Network.Utilits
         Request_Call, // Запит на дзвінок
         Accept_Call, // Відповідь від клієнта на  Request
         Cancel_Call, // Відповідь від клієнта на  Request
+        End_Call, // Закінчення розмови
         Check_Сonnection, // При включенні прогарми, буде чек зєднання
         Synchronization, // Коли клієнт заходить в чат, потрібно йому получити дані, а саме текст і які файли йому доступні(переписку)
         Disconnect, // Від'єднання клієнта

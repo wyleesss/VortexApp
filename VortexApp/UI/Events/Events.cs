@@ -7,7 +7,49 @@ namespace VortexApp.UI.Events
 {
     internal class UIEvents
     {
-        public static void RequestCallUI(string friendID)
+        public static void EndCallUI()
+        {
+            ((MainViewModel)Application.Current.MainWindow.DataContext).client.EndCall(Guid.Parse(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID));
+            ((MainViewModel)Application.Current.MainWindow.DataContext).SelectedContact.Messages.Add(new MessageModel
+            {
+                Username = "Request Status",
+                Time = DateTime.Now,
+                Message = "Call End",
+            });
+            ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact = null;
+            ((MainWindow)Application.Current.MainWindow).callWindow.Close();
+        }
+        public static void CancelCallUI()
+        {
+            ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
+            ((MainViewModel)Application.Current.MainWindow.DataContext).client.CancelCall(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID);
+            ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Messages.Add(new MessageModel
+            {
+                Username = "Request Status",
+                Time = DateTime.Now,
+                Message = "Request has been cancelled",
+            });
+            ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact = null;
+        }
+        public static void AcceptCallUI(string IP)
+        {
+            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+            {
+                ((MainViewModel)Application.Current.MainWindow.DataContext).client.StartCall(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.IP);
+                ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Messages.Add(new MessageModel
+                {
+                    Username = "Request Status",
+                    Time = DateTime.Now,
+                    Message = "Call Started",
+                });
+                ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
+                CallWindow callWindow = new();
+                callWindow.Title = ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Username + " - Call";
+                callWindow.Show();
+
+            }));
+        }
+        public static void RequestCallUI(string friendID, string IP)
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
@@ -16,6 +58,7 @@ namespace VortexApp.UI.Events
                 var mainwindow = (MainWindow)Application.Current.MainWindow;
 
                 context.CallingContact = contact;
+                context.CallingContact.IP = IP;
                 mainwindow.CallRequest.Visibility = Visibility.Visible;
 
             }));

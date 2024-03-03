@@ -1,7 +1,7 @@
 ﻿using NAudio.Wave;
+using System.IO;
 using System.Net;
 using System.Net.Sockets;
-using System.IO;
 
 namespace Client.Services.Audio
 {
@@ -53,13 +53,17 @@ namespace Client.Services.Audio
         public void StopReceive() { isReceiving = false; }
         public void Send()
         {
-            IsSending = true;
-
-            waveIn.DataAvailable += (object? sender, NAudio.Wave.WaveInEventArgs e) =>
+            try
             {
-                udpClientSend.Send(e.Buffer, e.Buffer.Length);
-            };
-            waveIn.StartRecording();
+                IsSending = true;
+
+                waveIn.DataAvailable += (object? sender, NAudio.Wave.WaveInEventArgs e) =>
+                {
+                    udpClientSend.Send(e.Buffer, e.Buffer.Length);
+                };
+                waveIn.StartRecording();
+            }
+            catch { }
         }
         public void StopSend() { IsSending = false; waveIn.StopRecording(); }
     }

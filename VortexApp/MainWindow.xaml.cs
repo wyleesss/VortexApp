@@ -17,6 +17,7 @@ namespace VortexApp
     public partial class MainWindow : Window
     {
         public RegistrationWindow registrationWindow;
+        public CallWindow callWindow;
         public MainWindow()
         {
             InitializeComponent();
@@ -287,8 +288,15 @@ namespace VortexApp
 
         private void AcceptCallRequest(object sender, RoutedEventArgs e)
         {
+            ((MainViewModel)DataContext).client.StartCall(((MainViewModel)DataContext).CallingContact.IP);
+            ((MainViewModel)DataContext).CallingContact.Messages.Add(new MessageModel
+            {
+                Username = "Request Status",
+                Time = DateTime.Now,
+                Message = "Call Started",
+            });
             CallRequest.Visibility = Visibility.Hidden;
-            CallWindow callWindow = new();
+            callWindow = new();
             callWindow.Title = ((MainViewModel)DataContext).CallingContact.Username + " - Call";
             callWindow.Show();
         }
@@ -296,13 +304,19 @@ namespace VortexApp
         private void DeclineCallRequest(object sender, RoutedEventArgs e)
         {
             CallRequest.Visibility = Visibility.Hidden;
+            ((MainViewModel)DataContext).client.CancelCall(((MainViewModel)DataContext).CallingContact.UserID);
+            ((MainViewModel)DataContext).CallingContact.Messages.Add(new MessageModel
+            {
+                Username = "Request Status",
+                Time = DateTime.Now,
+                Message = "Request has been cancelled",
+            });
             ((MainViewModel)DataContext).CallingContact = null;
         }
 
         private void CancelCallRequest(object sender, RoutedEventArgs e)
         {
             CallResponseWaiting.Visibility = Visibility.Hidden;
-            ((MainViewModel)DataContext).CallingContact = null;
         }
 
         private void CallButton_Click(object sender, RoutedEventArgs e)

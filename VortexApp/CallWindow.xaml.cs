@@ -1,17 +1,9 @@
-﻿using System.Runtime.InteropServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shell;
 using System.Windows.Threading;
+using VortexApp.UI.Helpers;
 using VortexApp.UI.MVVM.Model;
 using VortexApp.UI.MVVM.ViewModel;
-using VortexApp.UI.Helpers;
-using Microsoft.Win32;
-using System.IO;
-using System.Threading;
 
 namespace VortexApp
 {
@@ -80,6 +72,13 @@ namespace VortexApp
 
         private void EndCallButton_Click(object sender, RoutedEventArgs e)
         {
+            ((MainViewModel)DataContext).client.EndCall(Guid.Parse(((MainViewModel)DataContext).CallingContact.UserID));
+            ((MainViewModel)DataContext).SelectedContact.Messages.Add(new MessageModel
+            {
+                Username = "Request Status",
+                Time = DateTime.Now,
+                Message = "Call End",
+            });
             ((MainViewModel)DataContext).CallingContact = null;
             this.Close();
         }

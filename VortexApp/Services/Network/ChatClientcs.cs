@@ -247,35 +247,17 @@ namespace Client.Services.Network
             {
                 UIEvents.SendMessageUI(data.Message, data.From);
             }
-            else if (data.Command == Command.Cancel_Call)
+            else if (data.Command == Command.End_Call)
             {
-                voiceCallHandler.StopReceive();
-                voiceCallHandler.StopSend();
-                Console.WriteLine(data.Command.ToString());
+                UIEvents.EndCallUI();
             }
             else if (data.Command == Command.Request_Call)
             {
-
-                UIEvents.RequestCallUI(data.From);
-
-                //yes
-                //IPEndPoint ipEndPointReceive = new(IPAddress.Parse("127.0.0.1"), 60202);// 60202
-                //IPEndPoint ipEndPointSend = new(IPAddress.Parse(data.ClientAddress), 60201);// 60201
-                //SendComamnd(new(Command.Accept_Call, data.To, data.From, IP, "a"));
-                //voiceCallHandler = new(ipEndPointReceive, ipEndPointSend);
-                //voiceCallHandler.Receive();
-                //voiceCallHandler.Send();
-
+                UIEvents.RequestCallUI(data.From, data.ClientAddress);
             }
             else if (data.Command == Command.Accept_Call)
             {
-
-                IPEndPoint ipEndPointReceive = new(IPAddress.Parse("127.0.0.1"), 60201);// 60201
-                IPEndPoint ipEndPointSend = new(IPAddress.Parse(data.ClientAddress), 60202);// 60202
-                voiceCallHandler = new(ipEndPointReceive, ipEndPointSend);
-                voiceCallHandler.Receive();
-                voiceCallHandler.Send();
-
+                UIEvents.AcceptCallUI(data.ClientAddress);
             }
             else if (data.Command == Command.FriendRequestGood)
             {
@@ -314,12 +296,20 @@ namespace Client.Services.Network
         {
             SendComamnd(new Data(Command.Request_Call, Id.ToString(), friendGuid.ToString(), IP, ""));
         }
+        public void AcceptCall(string friendID)
+        {
+            SendComamnd(new(Command.Accept_Call, Id.ToString(), friendID, IP, ""));
+        }
+        public void CancelCall(string friendID)
+        {
+            SendComamnd(new(Command.Cancel_Call, Id.ToString(), friendID, IP, ""));
+        }
         public void EndCall(Guid friendGuid)
         {
+            voiceCallHandler.StopReceive();
+            voiceCallHandler.StopSend();
 
-            SendComamnd(new Data(Command.Cancel_Call, Id.ToString(), friendGuid.ToString(), IP, ""));
-            voiceCallHandler.Receive();
-            voiceCallHandler.Send();
+            SendComamnd(new Data(Command.End_Call, Id.ToString(), friendGuid.ToString(), IP, ""));
         }
         private void SendComamnd(Data data)
         {
@@ -374,6 +364,15 @@ namespace Client.Services.Network
             var data = new Data(Command.CloseConnection, Id.ToString(), "Server", IP, "");
             if (server.Client.Connected)
                 server.Client.Send(data.ToBytes());
+        }
+
+        public void StartCall(string ClientAddress)
+        {
+            IPEndPoint ipEndPointReceive = new(IPAddress.Parse("127.0.0.1"), 60202);// 60202
+            IPEndPoint ipEndPointSend = new(IPAddress.Parse(ClientAddress), 60201);// 60201
+            voiceCallHandler = new(ipEndPointReceive, ipEndPointSend);
+            voiceCallHandler.Receive();
+            voiceCallHandler.Send();
         }
 
         #endregion
