@@ -32,8 +32,7 @@ namespace VortexApp.UI.Events
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
-                ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
-                ((MainViewModel)Application.Current.MainWindow.DataContext).client.CancelCall(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID);
+                ((MainWindow)Application.Current.MainWindow).CallResponseWaiting.Visibility = Visibility.Hidden;
                 foreach (var i in ((MainViewModel)Application.Current.MainWindow.DataContext).Contacts)
                 {
                     if (i.UserID == ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID)
