@@ -9,7 +9,7 @@ namespace VortexApp.UI.Events
     {
         public static void EndCallUI()
         {
-            ((MainViewModel)Application.Current.MainWindow.DataContext).client.EndCall(Guid.Parse(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID));
+            ((MainViewModel)Application.Current.MainWindow.DataContext).client.EndCallAccept();
             ((MainViewModel)Application.Current.MainWindow.DataContext).SelectedContact.Messages.Add(new MessageModel
             {
                 Username = "Request Status",

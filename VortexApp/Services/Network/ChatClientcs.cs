@@ -315,6 +315,11 @@ namespace Client.Services.Network
 
             SendComamnd(new Data(Command.End_Call, Id.ToString(), friendGuid.ToString(), IP, ""));
         }
+        public void EndCallAccept()
+        {
+            voiceCallHandler.StopReceive();
+            voiceCallHandler.StopSend();
+        }
         private void SendComamnd(Data data)
         {
             server.Client.Send(data.ToBytes());
