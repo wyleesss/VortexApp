@@ -35,18 +35,16 @@ namespace VortexApp
             callWindow = new();
             callWindow.DataContext = this.DataContext;
             registrationWindow.Show();
+            ((App)Application.Current).FormDataContext = (MainViewModel)this.DataContext;
+            Closing += (sender, e) =>
+            {
+                e.Cancel = true;
+                Application.Current.Shutdown();
+            };
         }
         private void CloseButton_Click(object sender, RoutedEventArgs e)
         {
             WindowStyle = WindowStyle.SingleBorderWindow;
-            Application.Current.Dispatcher.BeginInvoke((Action)(() =>
-            {
-                var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
-                if (context.client != null)
-                {
-                    context.client.Disconect();
-                }
-            }));
             Application.Current.Shutdown();
         }
 
