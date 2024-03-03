@@ -21,12 +21,12 @@ namespace VortexApp.UI.Events
                         {
                             Username = "Call Status",
                             Time = DateTime.Now,
-                            Message = "Call Ended" + (DateTime.Now - ((MainWindow)Application.Current.MainWindow).callWindow.startTime).ToString(@"hh\:mm\:ss"),
+                            Message = "Call Ended - " + (DateTime.Now - ((MainWindow)Application.Current.MainWindow).callWindow.startTime).ToString(@"hh\:mm\:ss"),
                         });
                     }
                 }
                 ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact = null;
-                ((MainWindow)Application.Current.MainWindow).callWindow.Close();
+                ((MainWindow)Application.Current.MainWindow).callWindow.Hide();
             }));
         }
         public static void CancelCallUI()
@@ -237,8 +237,8 @@ namespace VortexApp.UI.Events
                 var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
                 var contact = context.Contacts.Where(o => o.UserID == friendID).FirstOrDefault();
 
-                contact.Messages.Add(new MessageModel 
-                { 
+                contact.Messages.Add(new MessageModel
+                {
                     Message = "User is not connected. Your message has not been sent",
                     Username = "System"
                 }

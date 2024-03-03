@@ -77,11 +77,11 @@ namespace VortexApp
             {
                 Username = "Call Status",
                 Time = DateTime.Now,
-                Message = "Call Ended" + (DateTime.Now - startTime).ToString(@"hh\:mm\:ss"),
+                Message = "Call Ended - " + (DateTime.Now - startTime).ToString(@"hh\:mm\:ss"),
             });
             ((MainViewModel)DataContext).CallingContact = null;
             timer.Stop();
-            this.Close();
+            this.Hide();
         }
 
         private void MuteButton_Click(object sender, RoutedEventArgs e)
