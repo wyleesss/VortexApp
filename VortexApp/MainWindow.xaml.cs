@@ -292,12 +292,18 @@ namespace VortexApp
         {
             ((MainViewModel)DataContext).client.AcceptCall(((MainViewModel)DataContext).CallingContact.UserID);
             ((MainViewModel)DataContext).client.StartCall(((MainViewModel)DataContext).CallingContact.IP);
-            ((MainViewModel)DataContext).CallingContact.Messages.Add(new MessageModel
+            foreach (var i in ((MainViewModel)Application.Current.MainWindow.DataContext).Contacts)
             {
-                Username = "Request Status",
-                Time = DateTime.Now,
-                Message = "Call Started",
-            });
+                if (i.UserID == ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID)
+                {
+                    i.Messages.Add(new MessageModel
+                    {
+                        Username = "Request Status",
+                        Time = DateTime.Now,
+                        Message = "Call Start",
+                    });
+                }
+            }
             CallRequest.Visibility = Visibility.Hidden;
             callWindow.Title = ((MainViewModel)DataContext).CallingContact.Username + " - Call";
             callWindow.timer.Start();
@@ -308,12 +314,18 @@ namespace VortexApp
         {
             CallRequest.Visibility = Visibility.Hidden;
             ((MainViewModel)DataContext).client.CancelCall(((MainViewModel)DataContext).CallingContact.UserID);
-            ((MainViewModel)DataContext).CallingContact.Messages.Add(new MessageModel
+            foreach (var i in ((MainViewModel)Application.Current.MainWindow.DataContext).Contacts)
             {
-                Username = "Request Status",
-                Time = DateTime.Now,
-                Message = "Request has been cancelled",
-            });
+                if (i.UserID == ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID)
+                {
+                    i.Messages.Add(new MessageModel
+                    {
+                        Username = "Request Status",
+                        Time = DateTime.Now,
+                        Message = "Request has been cancelled",
+                    });
+                }
+            }
             ((MainViewModel)DataContext).CallingContact = null;
         }
 
