@@ -259,6 +259,10 @@ namespace Client.Services.Network
             {
                 UIEvents.AcceptCallUI(data.ClientAddress);
             }
+            else if (data.Command == Command.Cancel_Call)
+            {
+                UIEvents.CancelCallUI();
+            }
             else if (data.Command == Command.FriendRequestGood)
             {
                 UIEvents.FriendReqGOOD();
@@ -373,6 +377,16 @@ namespace Client.Services.Network
             voiceCallHandler = new(ipEndPointReceive, ipEndPointSend);
             voiceCallHandler.Receive();
             voiceCallHandler.Send();
+        }
+
+        public void StartCallAccept(string IP)
+        {
+            IPEndPoint ipEndPointReceive = new(IPAddress.Parse("127.0.0.1"), 60201);// 60201
+            IPEndPoint ipEndPointSend = new(IPAddress.Parse(IP), 60202);// 60202
+            voiceCallHandler = new(ipEndPointReceive, ipEndPointSend);
+            voiceCallHandler.Receive();
+            voiceCallHandler.Send();
+
         }
 
         #endregion

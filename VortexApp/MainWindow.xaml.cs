@@ -288,6 +288,7 @@ namespace VortexApp
 
         private void AcceptCallRequest(object sender, RoutedEventArgs e)
         {
+            ((MainViewModel)DataContext).client.AcceptCall(((MainViewModel)DataContext).CallingContact.UserID);
             ((MainViewModel)DataContext).client.StartCall(((MainViewModel)DataContext).CallingContact.IP);
             ((MainViewModel)DataContext).CallingContact.Messages.Add(new MessageModel
             {
@@ -321,7 +322,7 @@ namespace VortexApp
 
         private void CallButton_Click(object sender, RoutedEventArgs e)
         {
-            ((MainViewModel)DataContext).CallingContact = new()
+            ((MainViewModel)DataContext).CallingContact = new ContactModel()
             {
                 UserID = ((MainViewModel)DataContext).SelectedContact.UserID,
                 ImageSource = ((MainViewModel)DataContext).SelectedContact.ImageSource,

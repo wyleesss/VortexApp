@@ -35,13 +35,19 @@ namespace VortexApp.UI.Events
         {
             Application.Current.Dispatcher.BeginInvoke((Action)(() =>
             {
-                ((MainViewModel)Application.Current.MainWindow.DataContext).client.StartCall(((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.IP);
-                ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Messages.Add(new MessageModel
+                ((MainViewModel)Application.Current.MainWindow.DataContext).client.StartCallAccept(IP);
+                foreach (var i in ((MainViewModel)Application.Current.MainWindow.DataContext).Contacts)
                 {
-                    Username = "Request Status",
-                    Time = DateTime.Now,
-                    Message = "Call Started",
-                });
+                    if (i.UserID == ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.UserID)
+                    {
+                        i.Messages.Add(new MessageModel
+                        {
+                            Username = "Request Status",
+                            Time = DateTime.Now,
+                            Message = "Call Started",
+                        });
+                    }
+                }
                 ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
                 CallWindow callWindow = new();
                 callWindow.Title = ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Username + " - Call";
