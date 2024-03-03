@@ -15,13 +15,13 @@
         WindowStyle="None"
         Width="960" 
         Height="540"
-        Icon="/Resources/AppIcon.ico" 
+        Icon="./UI/Resources/AppIcon.ico" 
         ResizeMode="NoResize" Background="#FF232323">
     <Window.Resources>
         <Image x:Key="Windowed"
-               Source="/Resources/MaximizeIconSecondary.png" />
+               Source="./UI/Resources/MaximizeIconSecondary.png" />
         <Image x:Key="Fullscreen"
-               Source="/Resources/MaximizeIcon.png" />
+               Source="./UI/Resources/MaximizeIcon.png" />
     </Window.Resources>
     <WindowChrome.WindowChrome>
         <WindowChrome GlassFrameThickness="0"
