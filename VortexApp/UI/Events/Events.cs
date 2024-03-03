@@ -19,9 +19,9 @@ namespace VortexApp.UI.Events
                     {
                         i.Messages.Add(new MessageModel
                         {
-                            Username = "Request Status",
+                            Username = "Call Status",
                             Time = DateTime.Now,
-                            Message = "Call Ended",
+                            Message = "Call Ended" + (DateTime.Now - ((MainWindow)Application.Current.MainWindow).callWindow.startTime).ToString(@"hh\:mm\:ss"),
                         });
                     }
                 }
@@ -40,9 +40,9 @@ namespace VortexApp.UI.Events
                     {
                         i.Messages.Add(new MessageModel
                         {
-                            Username = "Request Status",
+                            Username = "Call Status",
                             Time = DateTime.Now,
-                            Message = "Request has been cancelled",
+                            Message = "Call has been cancelled",
                         });
                     }
                 }
@@ -61,7 +61,7 @@ namespace VortexApp.UI.Events
                     {
                         i.Messages.Add(new MessageModel
                         {
-                            Username = "Request Status",
+                            Username = "Call Status",
                             Time = DateTime.Now,
                             Message = "Call Started",
                         });
@@ -70,6 +70,7 @@ namespace VortexApp.UI.Events
                 ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
                 ((MainWindow)Application.Current.MainWindow).callWindow.Title = ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Username + " - Call";
                 ((MainWindow)Application.Current.MainWindow).callWindow.timer.Start();
+                ((MainWindow)Application.Current.MainWindow).callWindow.startTime = DateTime.Now;
                 ((MainWindow)Application.Current.MainWindow).callWindow.Show();
 
             }));
@@ -236,7 +237,12 @@ namespace VortexApp.UI.Events
                 var context = ((MainViewModel)Application.Current.MainWindow.DataContext);
                 var contact = context.Contacts.Where(o => o.UserID == friendID).FirstOrDefault();
 
-                contact.Messages.Add(new MessageModel { Message = "User is not connected. Your message has not been sent" });
+                contact.Messages.Add(new MessageModel 
+                { 
+                    Message = "User is not connected. Your message has not been sent",
+                    Username = "System"
+                }
+                );
             }));
 
         }

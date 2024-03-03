@@ -298,7 +298,7 @@ namespace VortexApp
                 {
                     i.Messages.Add(new MessageModel
                     {
-                        Username = "Request Status",
+                        Username = "Call Status",
                         Time = DateTime.Now,
                         Message = "Call Start",
                     });
@@ -306,6 +306,7 @@ namespace VortexApp
             }
             CallRequest.Visibility = Visibility.Hidden;
             callWindow.Title = ((MainViewModel)DataContext).CallingContact.Username + " - Call";
+            callWindow.startTime = DateTime.Now;
             callWindow.timer.Start();
             callWindow.Show();
         }
@@ -320,9 +321,9 @@ namespace VortexApp
                 {
                     i.Messages.Add(new MessageModel
                     {
-                        Username = "Request Status",
+                        Username = "Call Status",
                         Time = DateTime.Now,
-                        Message = "Request has been cancelled",
+                        Message = "Call has been cancelled",
                     });
                 }
             }
@@ -346,9 +347,9 @@ namespace VortexApp
             ((MainViewModel)DataContext).client.TryCall(Guid.Parse(((MainViewModel)DataContext).SelectedContact.UserID));
             ((MainViewModel)DataContext).SelectedContact.Messages.Add(new MessageModel
             {
-                Username = "Request Status",
+                Username = "Call Status",
                 Time = DateTime.Now,
-                Message = "Request has been sent",
+                Message = "Call has been sent",
             });
             CallResponseWaiting.Visibility = Visibility.Visible;
         }

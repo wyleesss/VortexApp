@@ -16,7 +16,7 @@ namespace VortexApp
 
         public DispatcherTimer timer;
         private TimeSpan elapsedTime;
-        private DateTime startTime;
+        public DateTime startTime;
         public CallWindow()
         {
             InitializeComponent();
@@ -24,7 +24,6 @@ namespace VortexApp
             MaxHeight = 1080 - TaskbarHelper.GetTaskbarHeight();
 
             timer = new DispatcherTimer();
-            startTime = DateTime.Now;
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = new TimeSpan(0, 0, 1);
 
@@ -76,9 +75,9 @@ namespace VortexApp
             ((MainViewModel)DataContext).client.EndCall(Guid.Parse(((MainViewModel)DataContext).CallingContact.UserID));
             ((MainViewModel)DataContext).SelectedContact.Messages.Add(new MessageModel
             {
-                Username = "Request Status",
+                Username = "Call Status",
                 Time = DateTime.Now,
-                Message = "Call End",
+                Message = "Call Ended" + (DateTime.Now - startTime).ToString(@"hh\:mm\:ss"),
             });
             ((MainViewModel)DataContext).CallingContact = null;
             timer.Stop();
