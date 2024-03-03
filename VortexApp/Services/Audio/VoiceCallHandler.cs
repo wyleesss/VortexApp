@@ -57,7 +57,10 @@ namespace Client.Services.Audio
         public void StopReceive()
         {
             isReceiving = false;
-            udpClientReceive.Close();
+            if (udpClientReceive != null)
+            {
+                udpClientReceive.Close();
+            }
         }
         public void Send()
         {
@@ -76,7 +79,10 @@ namespace Client.Services.Audio
         public void StopSend()
         {
             IsSending = false; waveIn.StopRecording();
-            udpClientSend.Close();
+            if (udpClientSend != null)
+            {
+                udpClientSend.Close();
+            }
         }
     }
 }

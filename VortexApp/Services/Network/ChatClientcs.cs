@@ -173,37 +173,26 @@ namespace Client.Services.Network
         {
             if (data.Command == Command.Good_Auth)
             {
-                string[] parts = data.Message.Split(' ');
-                Id = parts[0];
-                NickName = parts[1];
-                UIEvents.UserUpData(Id.ToString(), NickName);
-                int countFriends = int.Parse(parts[2]);
-                int secondData = 3;
-                if (countFriends > 0)
+                var arr = data.Message.Split(';');
+                Id = arr[0];
+                NickName = arr[1];
+                var friends = arr[2].Split(',');
+                var requests = arr[3].Split(',');
+                UIEvents.UserUpData(Id, NickName);
+                for (int i = 0; i < friends.Length; i = i + 2)
                 {
-                    for (int step = 3, i = 0; i < countFriends; step += 2, i++)
-                    {
-                        Friends.Add(Guid.Parse(parts[step]), parts[step + 1]);
-                        secondData += 2;
-                    }
-                    UIEvents.SetFriendsUI(Friends);
-                    if (int.Parse(parts[secondData]) > 0)
-                    {
-                        for (int step = secondData + 1, i = 0; i < int.Parse(parts[secondData]); step += 2, i++)
-                        {
-                            FriendsRequests.Add(Guid.Parse(parts[step]), parts[step + 1]);
-                        }
-                        UIEvents.SetReqUI(FriendsRequests);
-                    }
+                    if (friends.ElementAtOrDefault(i + 1) != null)
+                        Friends.Add(Guid.Parse(friends[i]), friends[i + 1]);
                 }
-                else if (int.Parse(parts[secondData]) > 0)
+                if (Friends.Count > 0) UIEvents.SetFriendsUI(Friends);
+
+
+                for (int i = 0; i < requests.Length; i = i + 2)
                 {
-                    for (int step = 5, i = 0; i < int.Parse(parts[secondData]); step += 2, i++)
-                    {
-                        FriendsRequests.Add(Guid.Parse(parts[step]), parts[step + 1]);
-                    }
-                    UIEvents.SetReqUI(FriendsRequests);
+                    if (requests.ElementAtOrDefault(i + 1) != null)
+                        FriendsRequests.Add(Guid.Parse(requests[i]), requests[i + 1]);
                 }
+                if (FriendsRequests.Count > 0) UIEvents.SetReqUI(FriendsRequests);
 
                 UIEvents.MainWindowUse();
                 GC.Collect();
@@ -317,8 +306,11 @@ namespace Client.Services.Network
         }
         public void EndCallAccept()
         {
-            voiceCallHandler.StopReceive();
-            voiceCallHandler.StopSend();
+            if (voiceCallHandler != null)
+            {
+                voiceCallHandler.StopReceive();
+                voiceCallHandler.StopSend();
+            }
         }
         private void SendComamnd(Data data)
         {

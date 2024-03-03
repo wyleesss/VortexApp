@@ -15,7 +15,19 @@ namespace VortexApp
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             Current.Dispatcher.Invoke(() =>
-            {;
+            {
+                ;
+                if (FormDataContext.CallingContact != null)
+                {
+                    FormDataContext.client.EndCall(Guid.Parse(FormDataContext.CallingContact.UserID));
+                }
+                else
+                {
+                    if (FormDataContext.client != null)
+                    {
+                        FormDataContext.client.EndCallAccept();
+                    }
+                }
                 if (FormDataContext.client != null)
                 {
                     FormDataContext.client.Disconect();
