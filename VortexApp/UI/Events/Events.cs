@@ -50,6 +50,7 @@ namespace VortexApp.UI.Events
                 }
                 ((MainWindow)Application.Current.MainWindow).CallRequest.Visibility = Visibility.Hidden;
                 ((MainWindow)Application.Current.MainWindow).callWindow.Title = ((MainViewModel)Application.Current.MainWindow.DataContext).CallingContact.Username + " - Call";
+                ((MainWindow)Application.Current.MainWindow).callWindow.timer.Start();
                 ((MainWindow)Application.Current.MainWindow).callWindow.Show();
 
             }));

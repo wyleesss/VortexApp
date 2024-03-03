@@ -27,7 +27,6 @@ namespace VortexApp
             startTime = DateTime.Now;
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = new TimeSpan(0, 0, 1);
-            timer.Start();
 
             var test = ((MainViewModel)DataContext).Contacts;
         }
@@ -82,6 +81,7 @@ namespace VortexApp
                 Message = "Call End",
             });
             ((MainViewModel)DataContext).CallingContact = null;
+            timer.Stop();
             this.Close();
         }
 
